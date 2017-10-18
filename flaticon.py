@@ -66,6 +66,25 @@ def download_packs(pack):
     element_free.click()
     time.sleep(5)
 
+def get_icons_by_keyword(keyword):
+    icons_list = []
+    search_link = "https://www.flaticon.com/search?word=" + keyword
+    driver.get(search_link)
+    icons_count_xpath = '//section[@class="search-data"]/div[@class="row"]/h2'
+    element_icons_count = driver.find_element_by_xpath(icons_count_xpath)
+    icons_count = int(element_icons_count.text.replace("(", "").replace(",", "").replace(")", ""))
+    icons_pages_count = icons_count/96 + 1
+    if icons_pages_count%96 > 0:
+        icons_pages_count += 1
+    for icons_page in range(1, icons_pages_count):
+        icons_page_link = "https://www.flaticon.com/search/" + str(icons_page) + "?word=" + keyword
+        driver.get(icons_page_link)
+        icons_xpath = '//section[@class="search-result"]/ul/li/div/a'
+        element_icons = driver.find_elements_by_xpath(icons_xpath)
+        for icon in element_icons:
+            icons_list.append(icon.get_attribute("href"))
+    return icons_list
+
 login()
 total_count = get_total_packs()
 packs = get_packs_info(total_count)
