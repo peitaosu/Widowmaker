@@ -85,6 +85,22 @@ def get_icons_by_keyword(keyword):
             icons_list.append(icon.get_attribute("href"))
     return icons_list
 
+def down_icon_by_link(icon_link, format="svg"):
+    driver.get(icon_link)
+    formats_xpath = '//div[@class="container"]/ul[@id="fi-premium-download-buttons"]/li'
+    element_formats = driver.find_elements_by_xpath(formats_xpath)
+    for element_format in element_formats:
+        if len(element_format.find_elements_by_tag_name("a")) is 0:
+            continue
+        data_format = element_format.find_element_by_tag_name("a").get_attribute("data-format")
+        if data_format == format:
+            element_format.click()
+            time.sleep(5)
+            free_xpath = '//button[@id="download-free"]'
+            element_free = driver.find_element_by_xpath(free_xpath)
+            element_free.click()
+            time.sleep(5)
+
 login()
 total_count = get_total_packs()
 packs = get_packs_info(total_count)
