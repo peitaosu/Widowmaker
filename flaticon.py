@@ -1,4 +1,4 @@
-import os, time
+import os, sys, time
 from selenium import webdriver
 
 chrome_options = webdriver.ChromeOptions()
@@ -101,9 +101,32 @@ def download_icon_by_link(icon_link, format="svg"):
             element_free.click()
             time.sleep(5)
 
+def all(argv):
+    total_count = get_total_packs()
+    packs = get_packs_info(total_count)
+    for pack in packs:
+        download_pack_by_link(pack["link"])
+
+def pack(argv):
+    pack_link = argv[2]
+    download_pack_by_link(pack_link)
+
+def icon(argv):
+    if argv[2].startswith("https://") or argv[2].startswith("www."):
+        icon_link = argv[2]
+        download_icon_by_link(icon_link)
+    else:
+        icon_keyword = argv[2]
+        icons_list = get_icons_by_keyword(icon_keyword)
+        for icon_link in icons_list:
+            download_icon_by_link(icon_link)
+
+execute = {
+    "all": all,
+    "pack": pack,
+    "icon": icon
+}
+
 login()
-total_count = get_total_packs()
-packs = get_packs_info(total_count)
-for pack in packs:
-    download_pack_by_link(pack["link"])
+execute[sys.argv[1]](sys.argv)
 driver.quit()
