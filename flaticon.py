@@ -55,8 +55,8 @@ def get_packs_info(total_count):
             print e
     return packs
 
-def download_packs(pack):
-    driver.get(pack["link"])
+def download_pack_by_link(pack_link):
+    driver.get(pack_link)
     down_xpath = '//button[@title="Download Pack"]'
     element_down = driver.find_element_by_xpath(down_xpath)
     element_down.click()
@@ -85,7 +85,7 @@ def get_icons_by_keyword(keyword):
             icons_list.append(icon.get_attribute("href"))
     return icons_list
 
-def down_icon_by_link(icon_link, format="svg"):
+def download_icon_by_link(icon_link, format="svg"):
     driver.get(icon_link)
     formats_xpath = '//div[@class="container"]/ul[@id="fi-premium-download-buttons"]/li'
     element_formats = driver.find_elements_by_xpath(formats_xpath)
@@ -105,5 +105,5 @@ login()
 total_count = get_total_packs()
 packs = get_packs_info(total_count)
 for pack in packs:
-    download_packs(pack)
+    download_pack_by_link(pack["link"])
 driver.quit()
