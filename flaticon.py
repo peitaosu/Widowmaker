@@ -121,12 +121,23 @@ def icon(argv):
         for icon_link in icons_list:
             download_icon_by_link(icon_link)
 
+def help(argv):
+    print "Usage:"
+    print "    > python flaticon.py <pack/icon/all> [link/keyword]"
+    print "    - pack/icon/all: download icon pack or sign icon or all packs"
+    print "    - link/keyword: download pack by link or icon by link or keyword"
+
 execute = {
     "all": all,
     "pack": pack,
-    "icon": icon
+    "icon": icon,
+    "help": help
 }
 
-login()
-execute[sys.argv[1]](sys.argv)
+if len(sys.argv) == 1 or sys.argv[1] == "help":
+    argv = "help"
+else:
+    argv = sys.argv[1]
+    login()
+execute[argv](sys.argv)
 driver.quit()
