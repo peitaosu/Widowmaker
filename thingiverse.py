@@ -4,7 +4,8 @@ from selenium import webdriver
 chrome_options = webdriver.ChromeOptions()
 prefs = {
     "profile.managed_default_content_settings.images": 2, 
-    "profile.managed_default_content_settings.javascript": 1
+    "profile.managed_default_content_settings.javascript": 1,
+    "download.default_directory": "<path/to/download>"
     }
 chrome_options.add_experimental_option("prefs", prefs)
 driver = webdriver.Chrome(chrome_options=chrome_options)
@@ -19,3 +20,7 @@ def get_thing_item_from_page(filter, page_num):
         id = thing.get_attribute('data-id')
         thing_ids.append(id)
     return thing_ids
+
+def download_thing_zip(thing_id):
+    thing_down_url = "https://www.thingiverse.com/thing:" + str(thing_id) + "/zip"
+    driver.get(thing_down_url)
