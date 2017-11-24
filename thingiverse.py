@@ -24,3 +24,37 @@ def get_thing_item_from_page(filter, page_num):
 def download_thing_zip(thing_id):
     thing_down_url = "https://www.thingiverse.com/thing:" + str(thing_id) + "/zip"
     driver.get(thing_down_url)
+
+def get_thing_page_count():
+    page_url = "https://www.thingiverse.com/explore/popular/page:30000"
+    driver.get(page_url)
+    page_count = int(driver.current_url.split(":")[-1])
+    return page_count
+
+def thing(argv):
+    filter = argv[2]
+    page_count = argv[3]
+    if page_count != "all":
+        page_count = int(page_count)
+    else:
+        page_count = get_thing_page_count()
+    for it in range(page_count):
+        thing_ids = get_thing_item_from_page(filter, it+1)
+        for thing_id in thing_ids:
+            download_thing_zip(thing_id)
+    
+def help(argv):
+    pass
+
+execute = {
+    "thing": thing,
+    "help": help
+}
+
+if len(sys.argv) == 1 or sys.argv[1] == "help":
+    argv = "help"
+else:
+    argv = sys.argv[1]
+
+execute[argv](sys.argv)
+driver.quit()
