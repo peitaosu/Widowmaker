@@ -44,7 +44,10 @@ def thing(argv):
             download_thing_zip(thing_id)
     
 def help(argv):
-    pass
+    print "Usage:"
+    print "    > python thingiverse.py <newest/popular/random-things/...> <all/5/10/100/...>"
+    print "    - newest/popular/random-things/...: download things with filter"
+    print "    - all/5/10/100/...: download things with top N pages of filter"
 
 execute = {
     "thing": thing,
