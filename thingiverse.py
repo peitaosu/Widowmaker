@@ -33,21 +33,29 @@ def get_thing_page_count():
 
 def thing(argv):
     filter = argv[2]
-    page_count = argv[3]
-    if page_count != "all":
-        page_count = int(page_count)
-    else:
+    thing_count = argv[3]
+    if thing_count == "all":
         page_count = get_thing_page_count()
-    for it in range(page_count):
-        thing_ids = get_thing_item_from_page(filter, it+1)
-        for thing_id in thing_ids:
-            download_thing_zip(thing_id)
+        for it in range(page_count):
+            thing_ids = get_thing_item_from_page(filter, it+1)
+            for thing_id in thing_ids:
+                download_thing_zip(thing_id)
+    else:
+        page_count = int(thing_count)/12 + 1
+        thing_downloaded_count = 0
+        for it in range(page_count):
+            thing_ids = get_thing_item_from_page(filter, it+1)
+            for thing_id in thing_ids:
+                download_thing_zip(thing_id)
+                thing_downloaded_count = thing_downloaded_count + 1
+                if thing_downloaded_count == thing_count:
+                    return
     
 def help(argv):
     print "Usage:"
-    print "    > python thingiverse.py <newest/popular/random-things/...> <all/5/10/100/...>"
+    print "    > python thingiverse.py thing <newest/popular/random-things/...> <all/5/10/100/...>"
     print "    - newest/popular/random-things/...: download things with filter"
-    print "    - all/5/10/100/...: download things with top N pages of filter"
+    print "    - all/5/10/100/...: download things with top N things of filter"
 
 execute = {
     "thing": thing,
