@@ -31,7 +31,7 @@ def get_thing_page_count():
     page_count = int(driver.current_url.split(":")[-1])
     return page_count
 
-def thing(argv):
+def top(argv):
     filter = argv[2]
     thing_count = argv[3]
     if thing_count == "all":
@@ -50,15 +50,25 @@ def thing(argv):
                 thing_downloaded_count = thing_downloaded_count + 1
                 if thing_downloaded_count == thing_count:
                     return
-    
+
+def thing(argv):
+    if argv[2] != "id":
+        print "'thing' only accept arguments like 'id 1234', please use 'python thingiverse.py help' to get usage detail."
+        return
+    else:
+        id_number = int(argv[3])
+        download_thing_zip(id_number)
+
 def help(argv):
     print "Usage:"
-    print "    > python thingiverse.py thing <newest/popular/random-things/...> <all/5/10/100/...>"
-    print "    - newest/popular/random-things/...: download things with filter"
-    print "    - all/5/10/100/...: download things with top N things of filter"
+    print "    > python thingiverse.py <thing|top> <id|newest/popular/random-things/...> <1234|all/5/10/100/...>"
+    print "    - thing|top: download thing with id or top items of filter"
+    print "    - id|newest/popular/random-things/...: download things with id or filter"
+    print "    - 1234|all/5/10/100/...: download things with id or top N items of filter"
 
 execute = {
     "thing": thing,
+    "top": top,
     "help": help
 }
 
