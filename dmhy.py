@@ -13,6 +13,8 @@ def get_items_by_page(page_url):
     driver.get(page_url)
     resource_xpath = '//table[@id="topic_list"]/tbody/tr'
     resource_elements = driver.find_elements_by_xpath(resource_xpath)
+    if len(resource_elements) == 0:
+        return {}
     parsed_dict = {}
     for resource_element in resource_elements:
         items = resource_element.find_elements_by_tag_name('td')
@@ -27,4 +29,12 @@ def get_items_by_page(page_url):
         }
     return parsed_dict
 
-    
+def get_items_by_search(keyword):
+    parsed_dict = {}
+    for i in range(1, 1000):
+        search_url = "https://share.dmhy.org/topics/list/page/{}?keyword={}".format(i, keyword)
+        page_dict = get_items_by_page(search_url)
+        if page_dict == {}:
+            return parsed_dict
+        else:
+            parsed_dict.update(page_dict)
