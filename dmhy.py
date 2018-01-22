@@ -9,6 +9,14 @@ prefs = {
 chrome_options.add_experimental_option("prefs", prefs)
 driver = webdriver.Chrome(chrome_options=chrome_options)
 
+filter_mapping = {
+    "动画": 2, "季度全集": 31, "漫画": 3, "港台原版": 41, 
+    "日文原版": 42, "音乐": 4, "动漫音乐": 43, "同人音乐": 44, 
+    "流行音乐": 15, "日剧": 6, "RAW": 7, "游戏": 9, "电脑游戏": 17, 
+    "电视游戏": 18, "掌机游戏": 19, "网络游戏": 20, "游戏周边": 21, 
+    "特摄": 12, "其他": 1
+}
+
 def get_items_by_page(page_url):
     driver.get(page_url)
     resource_xpath = '//table[@id="topic_list"]/tbody/tr'
@@ -34,6 +42,16 @@ def get_items_by_search(keyword):
     for i in range(1, 1000):
         search_url = "https://share.dmhy.org/topics/list/page/{}?keyword={}".format(i, keyword)
         page_dict = get_items_by_page(search_url)
+        if page_dict == {}:
+            return parsed_dict
+        else:
+            parsed_dict.update(page_dict)
+
+def get_items_by_filter(filter):
+    parsed_dict = {}
+    for i in range(1, 1000):
+        filter_url = "https://share.dmhy.org/topics/list/sort_id/{}/page/{}".format(filter, i)
+        page_dict = get_items_by_page(filter_url)
         if page_dict == {}:
             return parsed_dict
         else:
