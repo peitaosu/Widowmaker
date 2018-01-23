@@ -1,4 +1,4 @@
-import os, sys, time
+import os, sys, time, json
 from selenium import webdriver
 
 chrome_options = webdriver.ChromeOptions()
@@ -66,3 +66,7 @@ def get_all_items():
             return parsed_dict
         else:
             parsed_dict.update(page_dict)
+
+def dump_to_file(file_path, parsed_dict):
+    with open(file_path, "w") as output:
+        json.dump(parsed_dict, output)
