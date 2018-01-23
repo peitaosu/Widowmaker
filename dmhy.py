@@ -37,9 +37,9 @@ def get_items_by_page(page_url):
         }
     return parsed_dict
 
-def get_items_by_search(keyword):
+def get_items_by_search(keyword, max_page=1000):
     parsed_dict = {}
-    for i in range(1, 1000):
+    for i in range(1, max_page):
         search_url = "https://share.dmhy.org/topics/list/page/{}?keyword={}".format(i, keyword)
         page_dict = get_items_by_page(search_url)
         if page_dict == {}:
@@ -47,9 +47,9 @@ def get_items_by_search(keyword):
         else:
             parsed_dict.update(page_dict)
 
-def get_items_by_filter(filter):
+def get_items_by_filter(filter, max_page=1000):
     parsed_dict = {}
-    for i in range(1, 1000):
+    for i in range(1, max_page):
         filter_url = "https://share.dmhy.org/topics/list/sort_id/{}/page/{}".format(filter, i)
         page_dict = get_items_by_page(filter_url)
         if page_dict == {}:
