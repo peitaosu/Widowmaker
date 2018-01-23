@@ -56,3 +56,13 @@ def get_items_by_filter(filter, max_page=1000):
             return parsed_dict
         else:
             parsed_dict.update(page_dict)
+
+def get_all_items():
+    parsed_dict = {}
+    for i in range(1, 5000):
+        page_url = "https://share.dmhy.org/topics/list/page/{}".format(i)
+        page_dict = get_items_by_page(page_url)
+        if page_dict == {}:
+            return parsed_dict
+        else:
+            parsed_dict.update(page_dict)
