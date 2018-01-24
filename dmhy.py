@@ -67,6 +67,56 @@ def get_all_items():
         else:
             parsed_dict.update(page_dict)
 
-def dump_to_file(file_path, parsed_dict):
+def dump_to_file(parsed_dict, file_path="result.json"):
     with open(file_path, "w") as output:
         json.dump(parsed_dict, output)
+
+def all(argv):
+    file_path = "result.json"
+    if len(argv) > 2:
+        file_path = argv[2]
+    parsed_dict = get_all_items()
+    dump_to_file(parsed_dict, file_path)
+
+def filter(argv):
+    filter_num = argv[2]
+    file_path = "result.json"
+    max_page = 1000
+    if len(argv) > 3:
+        if len(argv) > 4:
+            max_page = int(argv[4])
+        file_path = argv[3]
+    parsed_dict = get_items_by_filter(filter_num, max_page)
+    dump_to_file(parsed_dict, file_path)
+
+def search(argv):
+    keyword = argv[2]
+    file_path = "result.json"
+    max_page = 1000
+    if len(argv) > 3:
+        if len(argv) > 4:
+            max_page = int(argv[4])
+        file_path = argv[3]
+    parsed_dict = get_items_by_search(keyword, max_page)
+    dump_to_file(parsed_dict, file_path)
+
+def help(argv):
+    print "Usage:"
+    print "    > python dmhy.py all [save_file]"
+    print "    >                filter <filter> [pages] [save_file]"
+    print "    >                search <keyword> [pages] [save_file]"
+    print "    - all/filter/search: get all items or by filter or by search"
+    print "    - pages: get items from number of pages"
+    print "    - save_file: save items information into file"
+
+execute = {
+    "all": all,
+    "filter": filter,
+    "search": search,
+    "help": help
+}
+
+if len(sys.argv) == 1 or sys.argv[1] == "help":
+    argv = "help"
+execute[argv](sys.argv)
+driver.quit()
