@@ -31,33 +31,36 @@ def get_items_by_page(page_url):
 
 def get_items_by_search(keyword, max_page=1000):
     parsed_dict = {}
-    for i in range(1, max_page):
-        search_url = "https://share.dmhy.org/topics/list/page/{}?keyword={}".format(i, keyword)
+    for i in range(max_page):
+        search_url = "https://share.dmhy.org/topics/list/page/{}?keyword={}".format(i+1, keyword)
         page_dict = get_items_by_page(search_url)
         if page_dict == {}:
             return parsed_dict
         else:
             parsed_dict.update(page_dict)
+    return parsed_dict
 
 def get_items_by_filter(filter, max_page=1000):
     parsed_dict = {}
-    for i in range(1, max_page):
-        filter_url = "https://share.dmhy.org/topics/list/sort_id/{}/page/{}".format(filter, i)
+    for i in range(max_page):
+        filter_url = "https://share.dmhy.org/topics/list/sort_id/{}/page/{}".format(filter, i+1)
         page_dict = get_items_by_page(filter_url)
         if page_dict == {}:
             return parsed_dict
         else:
             parsed_dict.update(page_dict)
+    return parsed_dict
 
 def get_all_items():
     parsed_dict = {}
-    for i in range(1, 5000):
-        page_url = "https://share.dmhy.org/topics/list/page/{}".format(i)
+    for i in range(5000):
+        page_url = "https://share.dmhy.org/topics/list/page/{}".format(i+1)
         page_dict = get_items_by_page(page_url)
         if page_dict == {}:
             return parsed_dict
         else:
             parsed_dict.update(page_dict)
+    return parsed_dict
 
 def dump_to_file(parsed_dict, file_path="result.json"):
     with open(file_path, "w") as output:
@@ -76,8 +79,8 @@ def filter(argv):
     max_page = 1000
     if len(argv) > 3:
         if len(argv) > 4:
-            max_page = int(argv[4])
-        file_path = argv[3]
+            file_path = argv[4]
+        max_page = int(argv[3])
     parsed_dict = get_items_by_filter(filter_num, max_page)
     dump_to_file(parsed_dict, file_path)
 
@@ -87,8 +90,8 @@ def search(argv):
     max_page = 1000
     if len(argv) > 3:
         if len(argv) > 4:
-            max_page = int(argv[4])
-        file_path = argv[3]
+            file_path = argv[4]
+        max_page = int(argv[3])
     parsed_dict = get_items_by_search(keyword, max_page)
     dump_to_file(parsed_dict, file_path)
 
@@ -112,5 +115,7 @@ execute = {
 
 if len(sys.argv) == 1 or sys.argv[1] == "help":
     argv = "help"
+else:
+    argv = sys.argv[1]
 execute[argv](sys.argv)
 driver.quit()
