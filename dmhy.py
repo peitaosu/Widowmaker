@@ -98,6 +98,8 @@ def help(argv):
     print "    >                filter <filter> [pages] [save_file]"
     print "    >                search <keyword> [pages] [save_file]"
     print "    - all/filter/search: get all items or by filter or by search"
+    print "    - filter: Animation 2, Animation Season 31, Comic 3, HK/TW Comic 41, JP Comic 42, Music 4, Animation Music 43, DouJin Music 44, Pop Music 15,"
+    print "              JP TV 6, RAW 7, Game 9, PC Game 17, Video Game 18, Console Game 19, Net Game 20, Game Accessories 21, Tokusatsu 12, Other 1"
     print "    - pages: get items from number of pages"
     print "    - save_file: save items information into file"
 
