@@ -63,8 +63,12 @@ def get_all_items():
     return parsed_dict
 
 def dump_to_file(parsed_dict, file_path="result.json"):
-    with open(file_path, "w") as output:
-        json.dump(parsed_dict, output)
+    if os.path.isfile(file_path):
+        with open(file_path) as ori_file:
+            ori_dict = json.load(ori_file)
+            parsed_dict.update(ori_dict)
+    with open(file_path, "w") as out_file:
+        json.dump(parsed_dict, out_file)
 
 def all(argv):
     file_path = "result.json"
