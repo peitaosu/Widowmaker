@@ -1,4 +1,4 @@
-import os, sys, time, json
+import os, sys, json
 from selenium import webdriver
 
 chrome_options = webdriver.ChromeOptions()
@@ -29,7 +29,7 @@ def get_items_by_page(page_url):
         }
     return parsed_dict
 
-def get_items_by_search(keyword, max_page=1000):
+def get_items_by_search(keyword, max_page):
     parsed_dict = {}
     for i in range(max_page):
         search_url = "https://share.dmhy.org/topics/list/page/{}?keyword={}".format(i+1, keyword)
@@ -40,7 +40,7 @@ def get_items_by_search(keyword, max_page=1000):
             parsed_dict.update(page_dict)
     return parsed_dict
 
-def get_items_by_filter(filter, max_page=1000):
+def get_items_by_filter(filter, max_page):
     parsed_dict = {}
     for i in range(max_page):
         filter_url = "https://share.dmhy.org/topics/list/sort_id/{}/page/{}".format(filter, i+1)
