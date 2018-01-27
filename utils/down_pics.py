@@ -30,3 +30,7 @@ def get_pics_from_url(page_url):
     for image_element in image_elements:
         img_src = image_element.get_attribute('src')
         download_image(img_src, img_src.split("/")[-1])
+
+
+get_pics_from_url(sys.argv[1])
+driver.quit()
