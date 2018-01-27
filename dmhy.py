@@ -1,4 +1,4 @@
-import os, sys, time, json
+import os, sys, json
 from selenium import webdriver
 
 chrome_options = webdriver.ChromeOptions()
@@ -29,7 +29,7 @@ def get_items_by_page(page_url):
         }
     return parsed_dict
 
-def get_items_by_search(keyword, max_page=1000):
+def get_items_by_search(keyword, max_page):
     parsed_dict = {}
     for i in range(max_page):
         search_url = "https://share.dmhy.org/topics/list/page/{}?keyword={}".format(i+1, keyword)
@@ -40,7 +40,7 @@ def get_items_by_search(keyword, max_page=1000):
             parsed_dict.update(page_dict)
     return parsed_dict
 
-def get_items_by_filter(filter, max_page=1000):
+def get_items_by_filter(filter, max_page):
     parsed_dict = {}
     for i in range(max_page):
         filter_url = "https://share.dmhy.org/topics/list/sort_id/{}/page/{}".format(filter, i+1)
@@ -63,8 +63,12 @@ def get_all_items():
     return parsed_dict
 
 def dump_to_file(parsed_dict, file_path="result.json"):
-    with open(file_path, "w") as output:
-        json.dump(parsed_dict, output)
+    if os.path.isfile(file_path):
+        with open(file_path) as ori_file:
+            ori_dict = json.load(ori_file)
+            parsed_dict.update(ori_dict)
+    with open(file_path, "w") as out_file:
+        json.dump(parsed_dict, out_file)
 
 def all(argv):
     file_path = "result.json"
