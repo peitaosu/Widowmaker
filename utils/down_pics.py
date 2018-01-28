@@ -1,4 +1,4 @@
-import os, sys, urllib2
+import os, sys, urllib2, thread
 from selenium import webdriver
 
 chrome_options = webdriver.ChromeOptions()
@@ -29,7 +29,7 @@ def get_pics_from_url(page_url):
     image_elements = driver.find_elements_by_xpath(image_xpath)
     for image_element in image_elements:
         img_src = image_element.get_attribute('src')
-        download_image(img_src, img_src.split("/")[-1])
+        thread.start_new_thread(download_image, (img_src, img_src.split("/")[-1], ) )
 
 
 get_pics_from_url(sys.argv[1])
