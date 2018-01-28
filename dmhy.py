@@ -63,12 +63,17 @@ def get_all_items():
     return parsed_dict
 
 def dump_to_file(parsed_dict, file_path="result.json"):
-    if os.path.isfile(file_path):
-        with open(file_path) as ori_file:
-            ori_dict = json.load(ori_file)
-            parsed_dict.update(ori_dict)
-    with open(file_path, "w") as out_file:
-        json.dump(parsed_dict, out_file)
+    if file_path.endswith(".json"):
+        if os.path.isfile(file_path):
+            with open(file_path) as ori_file:
+                ori_dict = json.load(ori_file)
+                parsed_dict.update(ori_dict)
+        with open(file_path, "w") as out_file:
+            json.dump(parsed_dict, out_file)
+    else:
+        with open(file_path, "a") as out_file:
+            for item in parsed_dict:
+                out_file.write(item["magnet"] + "\n")
 
 def all(argv):
     file_path = "result.json"
