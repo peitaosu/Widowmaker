@@ -11,3 +11,15 @@ This project will contains some web spiders which can help you to get informatio
 * https://www.thingiverse.com/
 * https://www.youmagine.com
 * https://share.dmhy.org
+
+## Selenium
+
+`selenium` is required to use spiders. Use `pip` to install it, download and add chrome webdriver into path.
+
+```
+pip install selenium
+
+# or
+
+pip install -r requirements.txt
+```
