@@ -1,4 +1,5 @@
 import json, urllib2
+from urlparse import unquote
 
 REQ_HEADERS = {
     "Accept": "*/*",
@@ -9,6 +10,8 @@ REQ_HEADERS = {
     "Referer": "https://www.youtube.com/",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
 }
+
+CHUNK_SIZE = 16 * 1024
 
 def get_player_config(video_url):
     request = urllib2.Request(video_url, headers=REQ_HEADERS)
@@ -33,5 +36,5 @@ def get_video_info(player_config):
         "title": player_config["args"]["title"],
         "author": player_config["args"]["author"],
         "video_id": player_config["args"]["video_id"],
-        "video_urls": [x.strip("url=") for x in player_config["args"]["url_encoded_fmt_stream_map"].split(",")]
+        "video_urls": [unquote(x.strip("url=")) for x in player_config["args"]["url_encoded_fmt_stream_map"].split(",")]
     }
