@@ -38,3 +38,18 @@ def get_video_info(player_config):
         "video_id": player_config["args"]["video_id"],
         "video_urls": [unquote(x.strip("url=")) for x in player_config["args"]["url_encoded_fmt_stream_map"].split(",")]
     }
+
+def download_video(video_url, file_path):
+    request = urllib2.Request(video_url, headers=REQ_HEADERS)
+    response = urllib2.urlopen(request)
+
+    bytes_received = 0
+    download_size = int(response.info().getheader("Content-Length"))
+
+    with open(file_path, 'wb') as dst_file:
+        while True:
+            buffer = response.read(CHUNK_SIZE)
+            if not buffer and bytes_received == download_size:
+                break
+            bytes_received += len(buffer)
+            dst_file.write(buffer)
