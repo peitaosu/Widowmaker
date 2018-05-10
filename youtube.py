@@ -1,4 +1,4 @@
-import json, urllib2
+import os, sys, json, urllib2
 from urlparse import unquote
 
 REQ_HEADERS = {
@@ -53,3 +53,21 @@ def download_video(video_url, file_path):
                 break
             bytes_received += len(buffer)
             dst_file.write(buffer)
+
+def video(argv):
+    video_url = argv[2]
+    video_info = get_video_info(video_url)
+    file_path = video_info["title"]
+    for down_url in video_info["video_urls"]:
+        if "quality=hd720" in down_url:
+            video_url = down_url
+    if len(argv) > 3:
+        file_path = os.path.join(argv[3], file_path)
+    download_video(video_url, file_path)
+
+execute = {
+    "video": video
+}
+
+argv = sys.argv[1]
+execute[argv](sys.argv)
