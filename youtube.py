@@ -55,6 +55,9 @@ def download_video(video_url, file_path):
             dst_file.write(buffer)
 
 def video(argv):
+    if len(argv) < 3:
+        print "Please provide url of youtube video."
+        return
     video_url = argv[2]
     video_info = get_video_info(video_url)
     file_path = video_info["title"]
@@ -65,9 +68,19 @@ def video(argv):
         file_path = os.path.join(argv[3], file_path)
     download_video(video_url, file_path)
 
+def help(argv):
+    print "Usage:"
+    print "    > python youtube.py video <video_url>"
+    print "    - video_url: url of youtube video"
+
 execute = {
-    "video": video
+    "video": video,
+    "help": help
 }
 
-argv = sys.argv[1]
+if len(sys.argv) == 1 or sys.argv[1] == "help" or sys.argv[1] not in execute.keys():
+    argv = "help"
+else:
+    argv = sys.argv[1]
+
 execute[argv](sys.argv)
