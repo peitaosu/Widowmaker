@@ -59,7 +59,8 @@ def video(argv):
         print "Please provide url of youtube video."
         return
     video_url = argv[2]
-    video_info = get_video_info(video_url)
+    video_player_cfg = get_player_config(video_url)
+    video_info = get_video_info(video_player_cfg)
     file_path = video_info["title"]
     for down_url in video_info["video_urls"]:
         if "quality=hd720" in down_url:
