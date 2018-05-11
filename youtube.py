@@ -36,8 +36,11 @@ def get_video_info(player_config):
         "title": player_config["args"]["title"],
         "author": player_config["args"]["author"],
         "video_id": player_config["args"]["video_id"],
-        "video_urls": [unquote(x.strip("url=")) for x in player_config["args"]["url_encoded_fmt_stream_map"].split(",")]
+        "video_urls": [unquote(x[x.find("url=")+4:]) for x in player_config["args"]["url_encoded_fmt_stream_map"].split(",")]
     }
+
+def parse_video_url(video_url):
+    return "&".join([x for x in video_url.split("&") if not x.startswith("itag=")])
 
 def download_video(video_url, file_path):
     request = urllib2.Request(video_url, headers=REQ_HEADERS)
@@ -67,6 +70,7 @@ def video(argv):
             video_url = down_url
     if len(argv) > 3:
         file_path = os.path.join(argv[3], file_path)
+    video_url = parse_video_url(video_url)
     download_video(video_url, file_path)
 
 def help(argv):
