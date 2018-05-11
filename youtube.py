@@ -70,8 +70,9 @@ def video(argv):
 
 def help(argv):
     print "Usage:"
-    print "    > python youtube.py video <video_url>"
+    print "    > python youtube.py video <video_url> [<save_location>]"
     print "    - video_url: url of youtube video"
+    print "    - save_location: location to save downloaded video, default is current location"
 
 execute = {
     "video": video,
