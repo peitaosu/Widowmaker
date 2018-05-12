@@ -43,19 +43,28 @@ def parse_video_url(video_url):
     return "&".join([x for x in video_url.split("&") if not x.startswith("itag=")])
 
 def download_video(video_url, file_path):
+    print "Start download video from: {}".format(video_url)
     request = urllib2.Request(video_url, headers=REQ_HEADERS)
     response = urllib2.urlopen(request)
 
     bytes_received = 0
     download_size = int(response.info().getheader("Content-Length"))
 
-    with open(file_path, 'wb') as dst_file:
-        while True:
-            buffer = response.read(CHUNK_SIZE)
-            if not buffer and bytes_received == download_size:
-                break
-            bytes_received += len(buffer)
-            dst_file.write(buffer)
+    try:
+        with open(file_path, 'wb') as dst_file:
+            while True:
+                buffer = response.read(CHUNK_SIZE)
+                if not buffer and bytes_received == download_size:
+                    break
+                bytes_received += len(buffer)
+                dst_file.write(buffer)
+        print "Download Finished."
+    except Exception as err:
+        print "Download Failed: {}".format(err)
+
+
+def pring_video_info(video_info):
+    print "Title: {}\nAuthor: {}\nVideo ID: {}".format(video_info["title"], video_info["author"], video_info["video_id"])
 
 def video(argv):
     if len(argv) < 3:
@@ -64,6 +73,7 @@ def video(argv):
     video_url = argv[2]
     video_player_cfg = get_player_config(video_url)
     video_info = get_video_info(video_player_cfg)
+    pring_video_info(video_info)
     file_path = video_info["title"]
     for down_url in video_info["video_urls"]:
         if "quality=hd720" in down_url:
