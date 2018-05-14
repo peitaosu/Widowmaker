@@ -78,7 +78,7 @@ def video(argv):
     video_player_cfg = get_player_config(video_url)
     video_info = get_video_info(video_player_cfg)
     pring_video_info(video_info)
-    file_path = "-".join(video_info["title"].split()) + ".mp4"
+    file_path = "-".join(video_info["title"].replace(":", "").split()) + ".mp4"
     for down_url in video_info["video_urls"]:
         if "quality=hd720" in down_url:
             video_url = down_url
