@@ -40,7 +40,11 @@ def get_video_info(player_config):
     }
 
 def parse_video_url(video_url):
-    return "&".join([x for x in video_url.split("&") if not x.startswith("itag=")])
+    # TODO: fix 403 forbidden issue while download from url directly
+    
+    # Remove itag, but seems it's not the correct solution
+    # return "&".join([x for x in video_url.split("&") if not x.startswith("itag=")])
+    return video_url
 
 def download_video(video_url, file_path):
     print "Start download video from: {}".format(video_url)
