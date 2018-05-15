@@ -87,14 +87,25 @@ def video(argv):
     video_url = parse_video_url(video_url)
     download_video(video_url, file_path)
 
+def file(argv):
+    if len(argv) < 3:
+        print "Please provide file of youtube video url list."
+        return
+    with open(argv[2]) as in_file:
+        video_list = in_file.readlines()
+    for video_url in video_list:
+        video([None, None, video_url])
+        
 def help(argv):
     print "Usage:"
-    print "    > python youtube.py video <video_url> [<save_location>]"
+    print "    > python youtube.py video/file <video_url>/<file_path> [<save_location>]"
     print "    - video_url: url of youtube video"
     print "    - save_location: location to save downloaded video, default is current location"
+    print "    - file_path: read video urls from file"
 
 execute = {
     "video": video,
+    "file": file,
     "help": help
 }
 
