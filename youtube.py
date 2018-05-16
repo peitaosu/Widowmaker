@@ -94,7 +94,8 @@ def file(argv):
     with open(argv[2]) as in_file:
         video_list = in_file.readlines()
     for video_url in video_list:
-        video([None, None, video_url])
+        if video_url.startswith("http"):
+            video([None, None, video_url])
         
 def help(argv):
     print "Usage:"
