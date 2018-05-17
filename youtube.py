@@ -1,5 +1,6 @@
 import os, sys, json, urllib2
 from urlparse import unquote
+from utils.down import download
 
 REQ_HEADERS = {
     "Accept": "*/*",
@@ -10,8 +11,6 @@ REQ_HEADERS = {
     "Referer": "https://www.youtube.com/",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
 }
-
-CHUNK_SIZE = 16 * 1024
 
 def get_player_config(video_url):
     request = urllib2.Request(video_url, headers=REQ_HEADERS)
@@ -46,27 +45,6 @@ def parse_video_url(video_url):
     # return "&".join([x for x in video_url.split("&") if not x.startswith("itag=")])
     return video_url
 
-def download_video(video_url, file_path):
-    print "Start download video from: {}".format(video_url)
-    request = urllib2.Request(video_url, headers=REQ_HEADERS)
-    response = urllib2.urlopen(request)
-
-    bytes_received = 0
-    download_size = int(response.info().getheader("Content-Length"))
-
-    try:
-        with open(file_path, 'wb') as dst_file:
-            while True:
-                buffer = response.read(CHUNK_SIZE)
-                if not buffer and bytes_received == download_size:
-                    break
-                bytes_received += len(buffer)
-                dst_file.write(buffer)
-        print "Download Finished."
-    except Exception as err:
-        print "Download Failed: {}".format(err)
-
-
 def pring_video_info(video_info):
     print "Title: {}\nAuthor: {}\nVideo ID: {}".format(video_info["title"], video_info["author"], video_info["video_id"])
 
@@ -85,7 +63,7 @@ def video(argv):
     if len(argv) > 3:
         file_path = os.path.join(argv[3], file_path)
     video_url = parse_video_url(video_url)
-    download_video(video_url, file_path)
+    download(video_url, file_path, REQ_HEADERS)
 
 def file(argv):
     if len(argv) < 3:
