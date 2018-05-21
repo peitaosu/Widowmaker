@@ -45,11 +45,12 @@ def parse_video_url(video_url):
     # return "&".join([x for x in video_url.split("&") if not x.startswith("itag=")])
     return video_url
 
-def get_high_quality_url(video_urls):
-    for down_url in video_urls:
+def get_high_quality_video(video_info):
+    file_path = "-".join(video_info["title"].replace(":", "").split()) + ".mp4"
+    for down_url in video_info["video_urls"]:
         if "quality=hd720" in down_url:
-            return down_url
-    return video_urls[0]
+            return (down_url, file_path)
+    return (video_urls[0], file_path)
 
 def pring_video_info(video_info):
     print "Title: {}\nAuthor: {}\nVideo ID: {}".format(video_info["title"], video_info["author"], video_info["video_id"])
@@ -62,8 +63,7 @@ def video(argv):
     video_player_cfg = get_player_config(video_url)
     video_info = get_video_info(video_player_cfg)
     pring_video_info(video_info)
-    file_path = "-".join(video_info["title"].replace(":", "").split()) + ".mp4"
-    video_url = get_high_quality_url(video_info["video_urls"])
+    (video_url, file_path) = get_high_quality_video(video_info)
     if len(argv) > 3:
         file_path = os.path.join(argv[3], file_path)
     video_url = parse_video_url(video_url)
