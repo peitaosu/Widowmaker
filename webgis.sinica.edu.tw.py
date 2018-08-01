@@ -34,24 +34,25 @@ c.execute('''CREATE TABLE IF NOT EXISTS `INFO_1` (`ID` INTEGER NOT NULL, `省份
 c.execute('''CREATE TABLE IF NOT EXISTS `INFO_2` (`ID` INTEGER NOT NULL, `省份` TEXT, `地區` TEXT, `地方志名` TEXT, `卷數` TEXT, `修纂時間` TEXT, `編纂單位` TEXT, `叢書名` TEXT, `出版地` TEXT, `出版時間` TEXT, `稽核項` TEXT, `館藏/藏書者` TEXT, `版本` TEXT, `備考/附註` TEXT, PRIMARY KEY(`ID`));''')
 conn.commit()
 
-def get_total_pages():
-    request = urllib.request.Request(SEARCH_URL + "1", headers=REQ_HEADERS)
+def get_response_content(request_url):
+    request = urllib.request.Request(request_url, headers=REQ_HEADERS)
     response = urllib.request.urlopen(request)
     if response:
-        content = response.read()
-        content = content.decode("big5", errors="ignore")
-        total_regex = r"<font face=\"Arial, Helvetica, sans-serif\">(\d*)</font>"
-        return int(re.findall(total_regex, content)[0])
+        return response.read()
+    return None
+
+def get_total_pages():
+    content = get_response_content(SEARCH_URL + "1")
+    content = content.decode("big5", errors="ignore")
+    total_regex = r"<font face=\"Arial, Helvetica, sans-serif\">(\d*)</font>"
+    return int(re.findall(total_regex, content)[0])
 
 def get_info_urls(page_url):
-    request = urllib.request.Request(page_url, headers=REQ_HEADERS)
-    response = urllib.request.urlopen(request)
-    if response:
-        content = response.read()
-        content = content.decode("big5", errors="ignore")
-        content = content.replace("\t", "").replace("\r", "").replace("\n", "")
-        url_regex = r"(detail\.asp\?ID=\d*\&Source=\d)"
-        return re.findall(url_regex, content)
+    content = get_response_content(page_url)
+    content = content.decode("big5", errors="ignore")
+    content = content.replace("\t", "").replace("\r", "").replace("\n", "")
+    url_regex = r"(detail\.asp\?ID=\d*\&Source=\d)"
+    return re.findall(url_regex, content)
 
 def get_all_pages(start):
     total = get_total_pages()
