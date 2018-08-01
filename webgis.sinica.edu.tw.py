@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+ # -*- coding: UTF-8 -*-
 
 import os
 import sys
@@ -22,14 +22,16 @@ REQ_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
 }
 
-SEARCH_URL = "http://webgis.sinica.edu.tw/place/query.asp?A1=%AC%D9%A5%F7&B1=containing&C1=%B6%B3%ABn&Page_setup=10&D1=AND&A2=99&B2=containing&C2=&D2=AND&A3=99&B3=containing&C3=&page="
-PAGE_URL = "http://webgis.sinica.edu.tw/place/detail.asp?ID={}&Source=1"
+SEARCH_URL = "http://webgis.sinica.edu.tw/place/query.asp?A1=%AC%D9%A5%F7&B1=containing&C1=%B6%B3%ABn&Page_setup=50&D1=AND&A2=99&B2=containing&C2=&D2=AND&A3=99&B3=containing&C3=&page="
+PAGE_URL_PREFIX = "http://webgis.sinica.edu.tw/place/"
 DB_PATH = "data.db"
+DATA_PATH = "data.json"
 
 conn = sqlite3.connect(DB_PATH)
 conn.text_factory = str
 c = conn.cursor()
-c.execute('''CREATE TABLE IF NOT EXISTS `INFO` (`ID` INTEGER NOT NULL, `省份` TEXT, `地區` TEXT, `卷數` TEXT, `編修者年代` TEXT, `人名` TEXT, `年代` TEXT, `西元` TEXT, `性質` TEXT,`館藏地` TEXT,`註記` TEXT, PRIMARY KEY(`ID`));''')
+c.execute('''CREATE TABLE IF NOT EXISTS `INFO_1` (`ID` INTEGER NOT NULL, `省份` TEXT, `地區` TEXT, `卷數` TEXT, `編修者年代` TEXT, `人名` TEXT, `年代` TEXT, `西元` TEXT, `性質` TEXT,`館藏地` TEXT,`註記` TEXT, PRIMARY KEY(`ID`));''')
+c.execute('''CREATE TABLE IF NOT EXISTS `INFO_2` (`ID` INTEGER NOT NULL, `省份` TEXT, `地區` TEXT, `地方志名` TEXT, `卷數` TEXT, `修纂時間` TEXT, `編纂單位` TEXT, `叢書名` TEXT, `出版地` TEXT, `出版時間` TEXT, `稽核項` TEXT, `館藏/藏書者` TEXT, `版本` TEXT, `備考/附註` TEXT, PRIMARY KEY(`ID`));''')
 conn.commit()
 
 def get_total_pages():
@@ -42,51 +44,53 @@ def get_total_pages():
         total = int(re.findall(regex, content)[0])
         return total
 
-
-def get_page_ids(search_url):
+def get_page_urls(search_url):
     request = urllib.request.Request(search_url, headers=REQ_HEADERS)
     response = urllib.request.urlopen(request)
     if response:
         content = response.read()
         content = content.decode("big5", errors="ignore")
         content = content.replace("\t", "").replace("\r", "").replace("\n", "")
-        regex = r"<a href=\"detail\.asp\?ID=(\d*)\&Source=1\">"
+        regex = r"(detail\.asp\?ID=\d*\&Source=\d)"
         matches = re.findall(regex, content)
-        IDs = []
-        for id in matches:
-            IDs.append(id)
-        return IDs
-
+        return matches
 
 def get_all_pages(start):
     total = get_total_pages()
     print("Totals: " + str(total))
     for i in range(start, total):
-        IDs = get_page_ids(SEARCH_URL + str(i + 1))
-        for id in IDs:
-            get_info(id)
-        time.sleep(1)
+        urls = get_page_urls(SEARCH_URL + str(i+1))
+        print("Getting Pages from:" + str(i+1))
+        for url in urls:
+            get_info(url)
 
-
-def get_info(page_id):
-    print("Getting Data from ID:" + page_id)
-    url = PAGE_URL.format(page_id)
+def get_info(page_url):
+    url = PAGE_URL_PREFIX + page_url
+    print("Getting Data from URL:" + url)
     driver.get(url)
     content = driver.page_source
     content = content.replace("\t", "").replace("\r", "").replace("\n", "")
-    regex = r"width=\"100\">([^<]*)： </th><td class=\"calc\" align=\"left\" valign=\"top\">\xa0([^<]*)</td>"
+    id_regex = r"detail\.asp\?ID=(\d*)\&Source=\d"
+    source_regex = r"detail\.asp\?ID=\d*\&Source=(\d)"
+    page_id = re.findall(id_regex, url)[0]
+    source = re.findall(source_regex, url)[0]
+    regex = r"width=\"100\">([^<]*)：    </th><td class=\"calc\" align=\"left\" valign=\"top\">\xa0([^<]*)</td>"
     matches = re.findall(regex, content)
     info = {}
     for key, value in matches:
         info[key] = value
-    write_to_db(page_id, info)
+    write_to_db(page_id, info, source)
 
-
-def write_to_db(id, info):
+def write_to_db(id, info, source):
     try:
-        c.execute('''INSERT OR IGNORE INTO INFO(`ID`, `省份`, `地區`, `卷數`, `編修者年代`, `人名`, `年代`, `西元`, `性質`,`館藏地`,`註記`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);''',
-                (id, info["省份"], info["地區"], info["卷數"], info["編修者年代"], info["人名"], info["年代"], info["西元"], info["性質"], info["館藏地"], info["註記"]))
-        conn.commit()
+        if source == "1":
+            c.execute('''INSERT OR IGNORE INTO INFO_1 (`ID`, `省份`, `地區`, `卷數`, `編修者年代`, `人名`, `年代`, `西元`, `性質`,`館藏地`,`註記`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);''',
+                        (id, info["省份"], info["地區"], info["卷數"], info["編修者年代"], info["人名"], info["年代"], info["西元"], info["性質"], info["館藏地"], info["註記"]))
+            conn.commit()
+        if source == "2":
+            c.execute('''INSERT OR IGNORE INTO INFO_2 (`ID`, `省份`, `地區`, `地方志名`, `卷數`, `修纂時間`, `編纂單位`, `叢書名`, `出版地`, `出版時間`, `稽核項`, `館藏/藏書者`, `版本`, `備考/附註`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);''',
+                        (id, info["省份"], info["地區"], info["地方志名"], info["卷數"], info["修纂時間"], info["編纂單位"], info["叢書名"], info["出版地"], info["出版時間"], info["稽核項"], info["館藏/藏書者"], info["版本"], info["備考/附註"]))
+            conn.commit()
     except Exception as e:
         print(e)
 
