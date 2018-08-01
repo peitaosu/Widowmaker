@@ -23,7 +23,7 @@ REQ_HEADERS = {
 }
 
 SEARCH_URL = "http://webgis.sinica.edu.tw/place/query.asp?A1=%AC%D9%A5%F7&B1=containing&C1=%B6%B3%ABn&Page_setup=50&D1=AND&A2=99&B2=containing&C2=&D2=AND&A3=99&B3=containing&C3=&page="
-PAGE_URL_PREFIX = "http://webgis.sinica.edu.tw/place/"
+INFO_URL_PREFIX = "http://webgis.sinica.edu.tw/place/"
 DB_PATH = "data.db"
 DATA_PATH = "data.json"
 
@@ -40,46 +40,43 @@ def get_total_pages():
     if response:
         content = response.read()
         content = content.decode("big5", errors="ignore")
-        regex = r"<font face=\"Arial, Helvetica, sans-serif\">(\d*)</font>"
-        total = int(re.findall(regex, content)[0])
-        return total
+        total_regex = r"<font face=\"Arial, Helvetica, sans-serif\">(\d*)</font>"
+        return int(re.findall(total_regex, content)[0])
 
-def get_page_urls(search_url):
-    request = urllib.request.Request(search_url, headers=REQ_HEADERS)
+def get_info_urls(page_url):
+    request = urllib.request.Request(page_url, headers=REQ_HEADERS)
     response = urllib.request.urlopen(request)
     if response:
         content = response.read()
         content = content.decode("big5", errors="ignore")
         content = content.replace("\t", "").replace("\r", "").replace("\n", "")
-        regex = r"(detail\.asp\?ID=\d*\&Source=\d)"
-        matches = re.findall(regex, content)
-        return matches
+        url_regex = r"(detail\.asp\?ID=\d*\&Source=\d)"
+        return re.findall(url_regex, content)
 
 def get_all_pages(start):
     total = get_total_pages()
     print("Totals: " + str(total))
     for i in range(start, total):
-        urls = get_page_urls(SEARCH_URL + str(i+1))
+        info_urls = get_info_urls(SEARCH_URL + str(i+1))
         print("Getting Pages from:" + str(i+1))
-        for url in urls:
-            get_info(url)
+        for info_url in info_urls:
+            get_info(info_url)
 
-def get_info(page_url):
-    url = PAGE_URL_PREFIX + page_url
+def get_info(info_url):
+    url = INFO_URL_PREFIX + info_url
     print("Getting Data from URL:" + url)
     driver.get(url)
     content = driver.page_source
     content = content.replace("\t", "").replace("\r", "").replace("\n", "")
     id_regex = r"detail\.asp\?ID=(\d*)\&Source=\d"
     source_regex = r"detail\.asp\?ID=\d*\&Source=(\d)"
-    page_id = re.findall(id_regex, url)[0]
+    info_regex = r"width=\"100\">([^<]*)：    </th><td class=\"calc\" align=\"left\" valign=\"top\">\xa0([^<]*)</td>"
+    id = re.findall(id_regex, url)[0]
     source = re.findall(source_regex, url)[0]
-    regex = r"width=\"100\">([^<]*)：    </th><td class=\"calc\" align=\"left\" valign=\"top\">\xa0([^<]*)</td>"
-    matches = re.findall(regex, content)
     info = {}
-    for key, value in matches:
+    for key, value in re.findall(info_regex, content):
         info[key] = value
-    write_to_db(page_id, info, source)
+    write_to_db(id, info, source)
 
 def write_to_db(id, info, source):
     try:
