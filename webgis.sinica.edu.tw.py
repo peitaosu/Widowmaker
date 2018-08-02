@@ -22,7 +22,8 @@ REQ_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
 }
 
-SEARCH_URL = "http://webgis.sinica.edu.tw/place/query.asp?A1=%AC%D9%A5%F7&B1=containing&C1=%B6%B3%ABn&Page_setup=50&D1=AND&A2=99&B2=containing&C2=&D2=AND&A3=99&B3=containing&C3=&page="
+KEY_WORD = sys.argv[1]
+SEARCH_URL = "http://webgis.sinica.edu.tw/place/query.asp?A1=%AC%D9%A5%F7&B1=containing&C1={}&Page_setup=50&D1=AND&A2=99&B2=containing&C2=&D2=AND&A3=99&B3=containing&C3=&page=".format(KEY_WORD)
 INFO_URL_PREFIX = "http://webgis.sinica.edu.tw/place/"
 DB_PATH = "data.db"
 DATA_PATH = "data.json"
