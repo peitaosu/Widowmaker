@@ -5,10 +5,17 @@ import sys
 import json
 import re
 import sqlite3
-import _thread
 import time
-import urllib.request
 from selenium import webdriver
+
+try:
+    # python 3.x
+    import urllib.request
+    import _thread
+except:
+    # python 2.x
+    import urllib2
+    import thread
 
 driver = webdriver.Chrome()
 
@@ -36,8 +43,14 @@ c.execute('''CREATE TABLE IF NOT EXISTS `INFO_2` (`ID` INTEGER NOT NULL, `省份
 conn.commit()
 
 def get_response_content(request_url):
-    request = urllib.request.Request(request_url, headers=REQ_HEADERS)
-    response = urllib.request.urlopen(request)
+    try:
+        # python 3.x
+        request = urllib.request.Request(request_url, headers=REQ_HEADERS)
+        response = urllib.request.urlopen(request)
+    except:
+        # python 2.x
+        request = urllib2.Request(request_url, headers=REQ_HEADERS)
+        response = urllib2.urlopen(request)
     if response:
         return response.read()
     return None
