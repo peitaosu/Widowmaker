@@ -1,2 +1,8 @@
 # Python
 *.pyc
+
+# sqlite3
+*.db
+
+# selenium
+*.log
