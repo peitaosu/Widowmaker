@@ -25,7 +25,29 @@ def get_ng_photo_of_day():
         image_list.append(image.get_attribute("href"))
     return image_list
 
+def get_links(argv):
+    save_file = "result.txt"
+    if len(argv) > 2:
+        save_file = argv[2]
+    result = get_ng_photo_of_day()
+    with open(save_file, "w") as out_file:
+        out_file.write("\n".join(result))
 
+def help(argv):
+    print "Usage:"
+    print "    > python ngwallpaper.py link [result.txt]"
+
+execute = {
+    "link": get_link,
+    "help": help
+}
+
+if len(sys.argv) == 1 or sys.argv[1] == "help" or sys.argv[1] not in execute.keys():
+    argv = "help"
+else:
+    argv = sys.argv[1]
+
+execute[argv](sys.argv)  
 
 
         
