@@ -25,7 +25,7 @@ def get_ng_photo_of_day():
         image_list.append(image.get_attribute("href"))
     return image_list
 
-def get_links(argv):
+def get_link(argv):
     save_file = "result.txt"
     if len(argv) > 2:
         save_file = argv[2]
@@ -48,6 +48,7 @@ else:
     argv = sys.argv[1]
 
 execute[argv](sys.argv)  
+driver.quit()
 
 
         
