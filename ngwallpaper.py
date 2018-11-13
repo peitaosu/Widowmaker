@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, time
 from selenium import webdriver
 
 chrome_options = webdriver.ChromeOptions()
@@ -16,6 +16,7 @@ def get_ng_photo_of_day():
     more_xpath = '//div[@class="show-more-button"]'
     while True:
         more_element = driver.find_element_by_xpath(more_xpath)
+        time.sleep(5)
         if not more_element:
             break
         more_element.click()
