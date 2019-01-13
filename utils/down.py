@@ -24,7 +24,7 @@ def download(url, file_path, header):
     except Exception as err:
         print "Download Failed: {}".format(err)
 
-def download_image(image_link, local_file driver, request_headers):
+def download_image(image_link, local_file, driver, request_headers):
     try:
         request = urllib2.Request(image_link, headers=request_headers)
         img = urllib2.urlopen(request)
