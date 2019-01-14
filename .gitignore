@@ -6,3 +6,7 @@
 
 # selenium
 *.log
+
+# pictures
+*.jpg
+*.png
