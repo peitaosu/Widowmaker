@@ -1,4 +1,7 @@
-import os, sys, time
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import os, sys, time, thread
 from selenium import webdriver
 from utils.down import *
 
@@ -21,5 +24,40 @@ REQ_HEADERS = {
 }
 
 def down_image_by_id(image_id, out_dir):
-    down_url = "https://unsplash.com/photos/{}/download?force=true".format(image_id)
-    download_image(down_url, os.path.join(out_dir, image_id + ".jpg"), driver, REQ_HEADERS)
+    if not os.path.isdir(out_dir):
+        os.makedirs(out_dir)
+    down_url = 'https://unsplash.com/photos/{}/download?force=true'.format(image_id)
+    save_path = os.path.join(out_dir, image_id + '.jpg')
+    if os.path.isfile(save_path):
+        if os.stat(save_path).st_size > 0:
+            return
+    download_image(down_url, save_path, driver, REQ_HEADERS)
+
+def get_pic_list_from_page(page_url):
+    driver.get(page_url)
+
+    SCROLL_PAUSE_TIME = 1
+    last_height = driver.execute_script("return document.body.scrollHeight")
+    while True:
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(SCROLL_PAUSE_TIME)
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        if new_height == last_height:
+            break
+        last_height = new_height
+    pic_xpath = '//a[@itemprop="contentUrl"]'
+    pic_elements = driver.find_elements_by_xpath(pic_xpath)
+    pic_ids = []
+    for pic in pic_elements:
+        pic_url = pic.get_attribute('href')
+        pic_id = pic_url.replace('https://unsplash.com/photos/', '')
+        pic_ids.append(pic_id)
+    return pic_ids
+
+
+ids = get_pic_list_from_page('https://unsplash.com/t/wallpapers')
+for id in ids:
+    thread.start_new_thread(down_image_by_id, (id, "unsplash", ))
+    time.sleep(2)
+
+driver.quit()
