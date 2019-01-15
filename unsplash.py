@@ -54,10 +54,34 @@ def get_pic_list_from_page(page_url):
         pic_ids.append(pic_id)
     return pic_ids
 
+def unsplash(argv):
+    if len(argv) < 2:
+        for tag in ['textures-patterns', 'current-events', 'business-work', 'animals', 'travel', 'fashion', 'food-drink', 'spirituality', 'experimental', 'people', 'health', 'arts-culture']:
+            ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(tag))
+            for id in ids:
+                thread.start_new_thread(down_image_by_id, (id, "unsplash_{}".format(tag), ))
+                time.sleep(2)
+ 
+    else:
+        ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(argv[1]))
+        for id in ids:
+            thread.start_new_thread(down_image_by_id, (id, "unsplash_{}".format(argv[1]), ))
+            time.sleep(0.5)
 
-ids = get_pic_list_from_page('https://unsplash.com/t/wallpapers')
-for id in ids:
-    thread.start_new_thread(down_image_by_id, (id, "unsplash", ))
-    time.sleep(2)
+
+def help():
+    print "Usage:"
+    print "    > python unsplash.py [<tag>]"
+    print "    - tag: download with tag, such as wallpapers, nature, ..."
+
+execute = {
+    "unsplash": unsplash,
+    "help": help
+}
+
+if len(sys.argv) > 1 and sys.argv[1] == "help":
+    execute["help"]()
+else:
+    execute["unsplash"](sys.argv)
 
 driver.quit()
