@@ -23,6 +23,8 @@ REQ_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
 }
 
+TAG_LIST = ['wallpapers', 'textures-patterns', 'nature', 'current-events', 'architecture', 'business-work', 'animals', 'travel', 'fashion', 'food-drink', 'spirituality', 'experimental', 'people', 'health', 'arts-culture']
+
 def down_image_by_id(image_id, out_dir):
     if not os.path.isdir(out_dir):
         os.makedirs(out_dir)
@@ -56,17 +58,21 @@ def get_pic_list_from_page(page_url):
 
 def unsplash(argv):
     if len(argv) < 2:
-        for tag in ['wallpapers', 'textures-patterns', 'nature', 'current-events', 'architecture', 'business-work', 'animals', 'travel', 'fashion', 'food-drink', 'spirituality', 'experimental', 'people', 'health', 'arts-culture']:
+        for tag in TAG_LIST:
             ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(tag))
             for id in ids:
                 thread.start_new_thread(down_image_by_id, (id, "unsplash_{}".format(tag), ))
                 time.sleep(2)
  
     else:
-        ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(argv[1]))
-        for id in ids:
-            thread.start_new_thread(down_image_by_id, (id, "unsplash_{}".format(argv[1]), ))
-            time.sleep(0.5)
+        if argv[1] in TAG_LIST:
+            ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(argv[1]))
+            for id in ids:
+                thread.start_new_thread(down_image_by_id, (id, "unsplash_{}".format(argv[1]), ))
+                time.sleep(0.5)
+        else:
+            down_image_by_id(argv[1], "unsplash_{}".format(argv[2]))
+
 
 
 def help():
