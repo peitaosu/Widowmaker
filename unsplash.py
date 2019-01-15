@@ -56,7 +56,7 @@ def get_pic_list_from_page(page_url):
 
 def unsplash(argv):
     if len(argv) < 2:
-        for tag in ['textures-patterns', 'current-events', 'business-work', 'animals', 'travel', 'fashion', 'food-drink', 'spirituality', 'experimental', 'people', 'health', 'arts-culture']:
+        for tag in ['wallpapers', 'textures-patterns', 'nature', 'current-events', 'architecture', 'business-work', 'animals', 'travel', 'fashion', 'food-drink', 'spirituality', 'experimental', 'people', 'health', 'arts-culture']:
             ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(tag))
             for id in ids:
                 thread.start_new_thread(down_image_by_id, (id, "unsplash_{}".format(tag), ))
