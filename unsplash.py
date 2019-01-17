@@ -38,7 +38,7 @@ def down_image_by_id(image_id, out_dir):
 def get_pic_list_from_page(page_url):
     driver.get(page_url)
 
-    SCROLL_PAUSE_TIME = 1
+    SCROLL_PAUSE_TIME = 2
     last_height = driver.execute_script("return document.body.scrollHeight")
     while True:
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -69,7 +69,7 @@ def unsplash(argv):
             ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(argv[1]))
             for id in ids:
                 thread.start_new_thread(down_image_by_id, (id, "unsplash_{}".format(argv[1]), ))
-                time.sleep(0.5)
+                time.sleep(1)
         else:
             down_image_by_id(argv[1], "unsplash_{}".format(argv[2]))
 
