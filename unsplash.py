@@ -18,8 +18,6 @@ REQ_HEADERS = {
     "Accept-Language": "en-US,en;q=0.9",
     "Accept-Charset": "big5,ISO-8859-1,utf-8;q=0.7,*;q=0.3",
     "Connection": "keep-alive",
-    "Origin": "https://webgis.sinica.edu.tw/",
-    "Referer": "https://webgis.sinica.edu.tw/",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
 }
 
@@ -61,17 +59,17 @@ def unsplash(argv):
         for tag in TAG_LIST:
             ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(tag))
             for id in ids:
-                thread.start_new_thread(down_image_by_id, (id, "unsplash_{}".format(tag), ))
+                thread.start_new_thread(down_image_by_id, (id, os.path.join("unsplash", tag), ))
                 time.sleep(2)
  
     else:
         if argv[1] in TAG_LIST:
             ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(argv[1]))
             for id in ids:
-                thread.start_new_thread(down_image_by_id, (id, "unsplash_{}".format(argv[1]), ))
-                time.sleep(1)
+                thread.start_new_thread(down_image_by_id, (id, os.path.join("unsplash", argv[1]), ))
+                time.sleep(0.5)
         else:
-            down_image_by_id(argv[1], "unsplash_{}".format(argv[2]))
+            down_image_by_id(argv[1], os.path.join("unsplash", argv[2]))
 
 
 
