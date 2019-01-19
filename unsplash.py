@@ -54,38 +54,45 @@ def get_pic_list_from_page(page_url):
         pic_ids.append(pic_id)
     return pic_ids
 
-def unsplash(argv):
-    if len(argv) < 2:
-        for tag in TAG_LIST:
-            ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(tag))
-            for id in ids:
-                thread.start_new_thread(down_image_by_id, (id, os.path.join("unsplash", tag), ))
-                time.sleep(2)
+def update(argv):
+    for tag in TAG_LIST:
+        ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(tag))
+        for id in ids:
+            thread.start_new_thread(down_image_by_id, (id, os.path.join("unsplash", tag), ))
+            time.sleep(0.5)
  
-    else:
-        if argv[1] in TAG_LIST:
-            ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(argv[1]))
-            for id in ids:
-                thread.start_new_thread(down_image_by_id, (id, os.path.join("unsplash", argv[1]), ))
-                time.sleep(0.5)
-        else:
-            down_image_by_id(argv[1], os.path.join("unsplash", argv[2]))
+def tag(argv):
+    ids = get_pic_list_from_page('https://unsplash.com/t/{}'.format(argv[1]))
+    for id in ids:
+        thread.start_new_thread(down_image_by_id, (id, os.path.join("unsplash", argv[1]), ))
+        time.sleep(2)
 
+def id(argv):
+    down_image_by_id(argv[1], os.path.join("unsplash", argv[2]))
 
 
 def help():
     print "Usage:"
-    print "    > python unsplash.py [<tag>]"
+    print "    > python unsplash.py [update\<tag>\<id>] [<tag>]"
     print "    - tag: download with tag, such as wallpapers, nature, ..."
+    print "    - id: download with id and specific tag, such as xxxx wallpapers, xxxx nature, ..."
+    print "    - update: update pictures with all tags."
 
 execute = {
-    "unsplash": unsplash,
+    "tag": tag,
+    "id": id,
+    "update": update,
     "help": help
 }
 
-if len(sys.argv) > 1 and sys.argv[1] == "help":
+if len(sys.argv) == 1:
     execute["help"]()
-else:
-    execute["unsplash"](sys.argv)
+if len(sys.argv) == 2:
+    if sys.argv[1] == "update":
+        execute["update"](sys.argv)
+    else:
+        execute["tag"](sys.argv)
+if len(sys.argv) > 2:
+    execute["id"](sys.argv)
 
 driver.quit()
