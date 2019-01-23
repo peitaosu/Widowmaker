@@ -1,13 +1,27 @@
-import os, sys, urllib2, thread
+import os, sys
 from selenium import webdriver
 
+try:
+    # python 3.x
+    import urllib.request
+    import _thread as thread
+except:
+    # python 2.x
+    import urllib2
+    import thread
 
 CHUNK_SIZE = 16 * 1024
 
 def download(url, file_path, header):
-    print "Start download from: {}".format(url)
-    request = urllib2.Request(url, headers=header)
-    response = urllib2.urlopen(request)
+    print("Start download from: {}".format(url))
+    try:
+        # python 3.x
+        request = urllib.request.Request(url, headers=header)
+        response = urllib.request.urlopen(request)
+    except:
+        # python 2.x
+        request = urllib2.Request(url, headers=header)
+        response = urllib2.urlopen(request)
 
     bytes_received = 0
     download_size = int(response.info().getheader("Content-Length"))
@@ -20,19 +34,26 @@ def download(url, file_path, header):
                     break
                 bytes_received += len(buffer)
                 dst_file.write(buffer)
-        print "Download Finished."
+        print("Download Finished.")
     except Exception as err:
-        print "Download Failed: {}".format(err)
+        print("Download Failed: {}".format(err))
 
 def download_image(image_link, local_file, driver, request_headers):
+    print("Start download from: {}".format(image_link))
     try:
-        request = urllib2.Request(image_link, headers=request_headers)
-        img = urllib2.urlopen(request)
+        try:
+            # python 3.x
+            request = urllib.request.Request(image_link, headers=request_headers)
+            img = urllib.request.urlopen(request)
+        except:
+            # python 2.x
+            request = urllib2.Request(image_link, headers=request_headers)
+            img = urllib2.urlopen(request)
         with open(local_file, 'wb') as save_file:
-            print local_file
+            print("Image saved to: {}".format(local_file))
             save_file.write(img.read())
     except urllib2.URLError,e:
-        print e.reason
+        print("Download Failed: {}".format(e.reason))
 
 def get_pics_from_url(page_url, driver):
     driver.get(page_url)
