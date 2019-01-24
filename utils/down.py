@@ -41,19 +41,22 @@ def download(url, file_path, header):
 def download_image(image_link, local_file, driver, request_headers):
     print("Start download from: {}".format(image_link))
     try:
+        # python 3.x
+        request = urllib.request.Request(image_link, headers=request_headers)
         try:
-            # python 3.x
-            request = urllib.request.Request(image_link, headers=request_headers)
             img = urllib.request.urlopen(request)
-        except:
-            # python 2.x
-            request = urllib2.Request(image_link, headers=request_headers)
+        except urllib.error.URLError as e:
+            print("Download Failed: {}".format(e.reason))
+    except:
+        # python 2.x
+        request = urllib2.Request(image_link, headers=request_headers)
+        try:
             img = urllib2.urlopen(request)
-        with open(local_file, 'wb') as save_file:
-            print("Image saved to: {}".format(local_file))
-            save_file.write(img.read())
-    except urllib2.URLError,e:
-        print("Download Failed: {}".format(e.reason))
+            with open(local_file, 'wb') as save_file:
+                print("Image saved to: {}".format(local_file))
+                save_file.write(img.read())
+        except urllib2.URLError as e:
+            print("Download Failed: {}".format(e.reason))
 
 def get_pics_from_url(page_url, driver):
     driver.get(page_url)

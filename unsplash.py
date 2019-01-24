@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, sys, time, thread
+import os, sys, time
 from selenium import webdriver
 from utils.down import *
 
@@ -72,11 +72,11 @@ def id(argv):
 
 
 def help():
-    print "Usage:"
-    print "    > python unsplash.py [update\<tag>\<id>] [<tag>]"
-    print "    - tag: download with tag, such as wallpapers, nature, ..."
-    print "    - id: download with id and specific tag, such as xxxx wallpapers, xxxx nature, ..."
-    print "    - update: update pictures with all tags."
+    print("Usage:")
+    print("    > python unsplash.py [update\<tag>\<id>] [<tag>]")
+    print("    - tag: download with tag, such as wallpapers, nature, ...")
+    print("    - id: download with id and specific tag, such as xxxx wallpapers, xxxx nature, ...")
+    print("    - update: update pictures with all tags.")
 
 execute = {
     "tag": tag,
