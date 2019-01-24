@@ -1,11 +1,11 @@
 import os, sys
 from selenium import webdriver
 
-try:
+if (sys.version_info > (3, 0)):
     # python 3.x
     import urllib.request
     import _thread as thread
-except:
+else:
     # python 2.x
     import urllib2
     import thread
@@ -14,11 +14,11 @@ CHUNK_SIZE = 16 * 1024
 
 def download(url, file_path, header):
     print("Start download from: {}".format(url))
-    try:
+    if (sys.version_info > (3, 0)):
         # python 3.x
         request = urllib.request.Request(url, headers=header)
         response = urllib.request.urlopen(request)
-    except:
+    else:
         # python 2.x
         request = urllib2.Request(url, headers=header)
         response = urllib2.urlopen(request)
@@ -40,14 +40,14 @@ def download(url, file_path, header):
 
 def download_image(image_link, local_file, driver, request_headers):
     print("Start download from: {}".format(image_link))
-    try:
+    if (sys.version_info > (3, 0)):
         # python 3.x
         request = urllib.request.Request(image_link, headers=request_headers)
         try:
             img = urllib.request.urlopen(request)
         except urllib.error.URLError as e:
             print("Download Failed: {}".format(e.reason))
-    except:
+    else:
         # python 2.x
         request = urllib2.Request(image_link, headers=request_headers)
         try:
