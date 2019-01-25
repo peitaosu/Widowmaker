@@ -42,21 +42,24 @@ def download_image(image_link, local_file, driver, request_headers):
     print("Start download from: {}".format(image_link))
     if (sys.version_info > (3, 0)):
         # python 3.x
-        request = urllib.request.Request(image_link, headers=request_headers)
         try:
+            request = urllib.request.Request(image_link, headers=request_headers)
             img = urllib.request.urlopen(request)
         except urllib.error.URLError as e:
             print("Download Failed: {}".format(e.reason))
+            return
     else:
         # python 2.x
-        request = urllib2.Request(image_link, headers=request_headers)
         try:
+            request = urllib2.Request(image_link, headers=request_headers)
             img = urllib2.urlopen(request)
-            with open(local_file, 'wb') as save_file:
-                print("Image saved to: {}".format(local_file))
-                save_file.write(img.read())
         except urllib2.URLError as e:
             print("Download Failed: {}".format(e.reason))
+            return
+    with open(local_file, 'wb') as save_file:
+        print("Image saved to: {}".format(local_file))
+        save_file.write(img.read())
+
 
 def get_pics_from_url(page_url, driver):
     driver.get(page_url)
