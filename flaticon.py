@@ -122,10 +122,10 @@ def icon(argv):
             download_icon_by_link(icon_link)
 
 def help(argv):
-    print "Usage:"
-    print "    > python flaticon.py <pack/icon/all> [link/keyword]"
-    print "    - pack/icon/all: download icon pack or sign icon or all packs"
-    print "    - link/keyword: download pack by link or icon by link or keyword"
+    print("Usage:")
+    print("    > python flaticon.py <pack/icon/all> [link/keyword]")
+    print("    - pack/icon/all: download icon pack or sign icon or all packs")
+    print("    - link/keyword: download pack by link or icon by link or keyword")
 
 execute = {
     "all": all,

@@ -35,8 +35,8 @@ def get_link(argv):
         out_file.write("\n".join(result))
 
 def help(argv):
-    print "Usage:"
-    print "    > python ngwallpaper.py link [result.txt]"
+    print("Usage:")
+    print("    > python ngwallpaper.py link [result.txt]")
 
 execute = {
     "link": get_link,

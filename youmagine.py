@@ -47,7 +47,7 @@ def top(argv):
 
 def thing(argv):
     if argv[2] != "id":
-        print "'thing' only accept arguments like 'id thing_id_string', please use 'python youmagine.py help' to get usage detail."
+        print("'thing' only accept arguments like 'id thing_id_string', please use 'python youmagine.py help' to get usage detail.")
         return
     else:
         id_string = argv[3]
@@ -55,11 +55,11 @@ def thing(argv):
         download_thing_zip_from_page(thing_url)
 
 def help(argv):
-    print "Usage:"
-    print "    > python youmagine.py <thing|top> <id|latest/popular/featured/...> <id_string|all/5/10/100/...>"
-    print "    - thing|top: download thing with id string or top items of filter"
-    print "    - id|latest/popular/featured/...: download things with id string or filter"
-    print "    - id_string|all/5/10/100/...: download things with id string or top N items of filter"
+    print("Usage:")
+    print("    > python youmagine.py <thing|top> <id|latest/popular/featured/...> <id_string|all/5/10/100/...>")
+    print("    - thing|top: download thing with id string or top items of filter")
+    print("    - id|latest/popular/featured/...: download things with id string or filter")
+    print("    - id_string|all/5/10/100/...: download things with id string or top N items of filter")
 
 execute = {
     "thing": thing,

@@ -53,18 +53,18 @@ def top(argv):
 
 def thing(argv):
     if argv[2] != "id":
-        print "'thing' only accept arguments like 'id 1234', please use 'python thingiverse.py help' to get usage detail."
+        print("'thing' only accept arguments like 'id 1234', please use 'python thingiverse.py help' to get usage detail.")
         return
     else:
         id_number = int(argv[3])
         download_thing_zip(id_number)
 
 def help(argv):
-    print "Usage:"
-    print "    > python thingiverse.py <thing|top> <id|newest/popular/random-things/...> <1234|all/5/10/100/...>"
-    print "    - thing|top: download thing with id or top items of filter"
-    print "    - id|newest/popular/random-things/...: download things with id or filter"
-    print "    - 1234|all/5/10/100/...: download things with id or top N items of filter"
+    print("Usage:")
+    print("    > python thingiverse.py <thing|top> <id|newest/popular/random-things/...> <1234|all/5/10/100/...>")
+    print("    - thing|top: download thing with id or top items of filter")
+    print("    - id|newest/popular/random-things/...: download things with id or filter")
+    print("    - 1234|all/5/10/100/...: download things with id or top N items of filter")
 
 execute = {
     "thing": thing,

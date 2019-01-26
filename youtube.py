@@ -1,6 +1,13 @@
-import os, sys, json, urllib2
+import os, sys, json
 from urlparse import unquote
 from utils.down import download
+
+if (sys.version_info > (3, 0)):
+    # python 3.x
+    import urllib.request
+else:
+    # python 2.x
+    import urllib2
 
 REQ_HEADERS = {
     "Accept": "*/*",
@@ -13,8 +20,14 @@ REQ_HEADERS = {
 }
 
 def get_player_config(video_url):
-    request = urllib2.Request(video_url, headers=REQ_HEADERS)
-    response = urllib2.urlopen(request)
+    if (sys.version_info > (3, 0)):
+        # python 3.x
+        request = urllib.request.Request(video_url, headers=REQ_HEADERS)
+        response = urllib.request.urlopen(request)
+    else:
+        # python 2.x
+        request = urllib2.Request(video_url, headers=REQ_HEADERS)
+        response = urllib2.urlopen(request)
     if response:
         content = response.read().decode("utf-8")
         player_cfg_start = content.find("ytplayer.config = ") + 18
@@ -53,11 +66,11 @@ def get_high_quality_video(video_info):
     return (video_urls[0], file_path)
 
 def pring_video_info(video_info):
-    print "Title: {}\nAuthor: {}\nVideo ID: {}".format(video_info["title"], video_info["author"], video_info["video_id"])
+    print("Title: {}\nAuthor: {}\nVideo ID: {}".format(video_info["title"], video_info["author"], video_info["video_id"]))
 
 def video(argv):
     if len(argv) < 3:
-        print "Please provide url of youtube video."
+        print("Please provide url of youtube video.")
         return
     video_url = argv[2]
     video_player_cfg = get_player_config(video_url)
@@ -71,7 +84,7 @@ def video(argv):
 
 def file(argv):
     if len(argv) < 3:
-        print "Please provide file of youtube video url list."
+        print("Please provide file of youtube video url list.")
         return
     with open(argv[2]) as in_file:
         video_list = in_file.readlines()
@@ -80,11 +93,11 @@ def file(argv):
             video([None, None, video_url])
         
 def help(argv):
-    print "Usage:"
-    print "    > python youtube.py video/file <video_url>/<file_path> [<save_location>]"
-    print "    - video_url: url of youtube video"
-    print "    - save_location: location to save downloaded video, default is current location"
-    print "    - file_path: read video urls from file"
+    print("Usage:")
+    print("    > python youtube.py video/file <video_url>/<file_path> [<save_location>]")
+    print("    - video_url: url of youtube video")
+    print("    - save_location: location to save downloaded video, default is current location")
+    print("    - file_path: read video urls from file")
 
 execute = {
     "video": video,
