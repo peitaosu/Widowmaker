@@ -1,12 +1,11 @@
 import os, sys, json
 from urlparse import unquote
 from utils.down import download
+from utils.common import *
 
-if (sys.version_info > (3, 0)):
-    # python 3.x
+if PY3:
     import urllib.request
 else:
-    # python 2.x
     import urllib2
 
 REQ_HEADERS = {
@@ -20,12 +19,10 @@ REQ_HEADERS = {
 }
 
 def get_player_config(video_url):
-    if (sys.version_info > (3, 0)):
-        # python 3.x
+    if PY3:
         request = urllib.request.Request(video_url, headers=REQ_HEADERS)
         response = urllib.request.urlopen(request)
     else:
-        # python 2.x
         request = urllib2.Request(video_url, headers=REQ_HEADERS)
         response = urllib2.urlopen(request)
     if response:

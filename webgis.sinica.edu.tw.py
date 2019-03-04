@@ -7,13 +7,12 @@ import re
 import sqlite3
 import time
 from selenium import webdriver
+from utils.common import *
 
-try:
-    # python 3.x
+if PY3:
     import urllib.request
     import _thread
-except:
-    # python 2.x
+else:
     import urllib2
     import thread
 
@@ -43,11 +42,11 @@ c.execute('''CREATE TABLE IF NOT EXISTS `INFO_2` (`ID` INTEGER NOT NULL, `省份
 conn.commit()
 
 def get_response_content(request_url):
-    try:
+    if PY3:
         # python 3.x
         request = urllib.request.Request(request_url, headers=REQ_HEADERS)
         response = urllib.request.urlopen(request)
-    except:
+    else:
         # python 2.x
         request = urllib2.Request(request_url, headers=REQ_HEADERS)
         response = urllib2.urlopen(request)
