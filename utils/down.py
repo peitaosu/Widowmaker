@@ -31,7 +31,7 @@ def download(url, file_path, header):
                     break
                 bytes_received += len(buffer)
                 dst_file.write(buffer)
-        print("Download Finished.")
+        print("File saved to: {}".format(dst_file))
     except Exception as err:
         print("Download Failed: {}".format(err))
 
