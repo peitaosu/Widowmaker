@@ -1,3 +1,5 @@
+ # -*- coding: UTF-8 -*-
+
 import os, sys, json
 from urlparse import unquote
 from utils.down import download

@@ -1,3 +1,5 @@
+ # -*- coding: UTF-8 -*-
+
 import os, sys, json
 from selenium import webdriver
 

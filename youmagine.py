@@ -1,3 +1,5 @@
+ # -*- coding: UTF-8 -*-
+
 import os, sys, time
 from selenium import webdriver
 
