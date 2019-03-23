@@ -36,6 +36,13 @@ def get_link(argv):
     with open(save_file, "w") as out_file:
         out_file.write("\n".join(result))
 
+def get_image_links(page_url):
+    driver.get(page_url)
+    image_xpath = '//picture/source'
+    image_element = driver.find_element_by_xpath(image_xpath)
+    image_source = image_element.get_attribute("srcset")
+    return image_source.split("1600w, ")[1].split("2048w")[0]
+    
 def help(argv):
     print("Usage:")
     print("    > python ngwallpaper.py link [result.txt]")
