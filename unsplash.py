@@ -4,6 +4,7 @@
 import os, sys, time
 from selenium import webdriver
 from utils.down import *
+from utils.common import *
 
 chrome_options = webdriver.ChromeOptions()
 prefs = {
@@ -12,14 +13,6 @@ prefs = {
     }
 chrome_options.add_experimental_option("prefs", prefs)
 driver = webdriver.Chrome(chrome_options=chrome_options)
-
-REQ_HEADERS = {
-    "Accept": "*/*",
-    "Accept-Language": "en-US,en;q=0.9",
-    "Accept-Charset": "big5,ISO-8859-1,utf-8;q=0.7,*;q=0.3",
-    "Connection": "keep-alive",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36"
-}
 
 TAG_LIST = ['wallpapers', 'textures-patterns', 'nature', 'current-events', 'architecture', 'business-work', 'animals', 'travel', 'fashion', 'food-drink', 'spirituality', 'experimental', 'people', 'health', 'arts-culture']
 
