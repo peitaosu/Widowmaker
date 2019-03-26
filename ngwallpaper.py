@@ -58,6 +58,7 @@ def down_image(page_url):
 def help(argv):
     print("Usage:")
     print("    > python ngwallpaper.py link [result.txt]")
+    print("    > python ngwallpaper.py image")
 
 execute = {
     "link": get_link,
