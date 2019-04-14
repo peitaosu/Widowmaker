@@ -54,7 +54,7 @@ def get_packs_info(total_count):
                 pack["link"] = link
                 packs.append(pack)
         except Exception as e:
-            print e
+            print(e)
     return packs
 
 def download_pack_by_link(pack_link):
