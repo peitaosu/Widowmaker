@@ -10,6 +10,9 @@ def create_frames(video_path, percent, output_path):
 if __name__=="__main__":
     video_path = sys.argv[1]
     output_path = sys.argv[2]
+    if not os.path.isdir(video_path):
+        print("{} not exists.".format(video_path))
+        sys.exit(-1)
     if not os.path.isdir(output_path):
         os.makedirs(output_path)
     saved_items = os.listdir(output_path)
