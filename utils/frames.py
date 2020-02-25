@@ -10,6 +10,9 @@ def create_frames(video_path, percent, output_path):
 if __name__=="__main__":
     video_path = sys.argv[1]
     output_path = sys.argv[2]
+    percent = "1/60"
+    if len(sys.argv) > 3:
+        percent = sys.argv[3]
     if not os.path.isdir(video_path):
         print("{} not exists.".format(video_path))
         sys.exit(-1)
@@ -22,5 +25,5 @@ if __name__=="__main__":
             continue
         full_video_path = os.path.join(video_path, sub_item)
         if os.path.isfile(full_video_path):
-            create_frames(full_video_path, "1/60", output_path)
+            create_frames(full_video_path, percent, output_path)
             
