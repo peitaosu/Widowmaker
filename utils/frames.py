@@ -1,6 +1,7 @@
 import os, sys
 
 def create_frames(video_path, percent, output_path):
+    print("Creating frames for " + video_path)
     video_name = os.path.splitext(os.path.basename(video_path))[0]
     out_folder = os.path.join(output_path, video_name)
     if not os.path.isdir(out_folder):
