@@ -7,7 +7,7 @@ def image_compress(image_folder, output_folder, quality=80):
     for sub_item in os.listdir(image_folder):
         sub_path = os.path.join(image_folder, sub_item)
         if os.path.isdir(sub_path):
-            go_and_opt(sub_path, output_folder)
+            image_compress(sub_path, output_folder)
         else:
             file_name = os.path.basename(sub_path)
             file_dir = os.path.dirname(sub_path)
