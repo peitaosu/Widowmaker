@@ -33,3 +33,16 @@ def image_compress(image_folder, output_folder, quality=80):
             else:
                 print("[FAILED] {} is not a picture.".format(sub_path))
 
+if __name__=="__main__":
+    image_folder = sys.argv[1]
+    output_folder = sys.argv[2]
+    quality = 80
+    if len(sys.argv) > 3:
+        quality = int(sys.argv[3])
+    if not os.path.isdir(image_folder):
+        print("{} not exists.".format(image_folder))
+        sys.exit(-1)
+    if not os.path.isdir(output_folder):
+        os.makedirs(output_folder)
+    image_compress(image_folder, output_folder, quality)
+            
