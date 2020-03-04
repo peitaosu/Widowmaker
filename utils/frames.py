@@ -15,8 +15,7 @@ if __name__=="__main__":
     if len(sys.argv) > 3:
         percent = sys.argv[3]
     if not os.path.isdir(video_path):
-        print("{} not exists.".format(video_path))
-        sys.exit(-1)
+        sys.exit("{} not exists.".format(video_path))
     if not os.path.isdir(output_path):
         os.makedirs(output_path)
     saved_items = os.listdir(output_path)

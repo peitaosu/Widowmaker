@@ -40,8 +40,7 @@ if __name__=="__main__":
     if len(sys.argv) > 3:
         quality = int(sys.argv[3])
     if not os.path.isdir(image_folder):
-        print("{} not exists.".format(image_folder))
-        sys.exit(-1)
+        sys.exit("{} not exists.".format(image_folder))
     if not os.path.isdir(output_folder):
         os.makedirs(output_folder)
     image_compress(image_folder, output_folder, quality)
