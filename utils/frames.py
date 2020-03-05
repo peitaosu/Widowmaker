@@ -1,6 +1,12 @@
 import os, sys
 
 def create_frames(video_path, percent, output_path):
+    """
+    args:
+        video_path(str): path to video
+        percent(int/int): percentage
+        output_path(str): output folder
+    """
     print("Creating frames for " + video_path)
     video_name = os.path.splitext(os.path.basename(video_path))[0]
     out_folder = os.path.join(output_path, video_name)

@@ -4,9 +4,9 @@ from PIL import Image
 def image_compress(image_folder, output_folder, quality=80):
     """
     args:
-        image_folder: relative image folder
-        output_folder: output folder
-        quality: jpg quality, default is 80
+        image_folder(str): relative image folder
+        output_folder(str): output folder
+        quality(int): jpg quality, default is 80
     """
     if not os.path.isdir(output_folder):
         os.makedirs(output_folder)
