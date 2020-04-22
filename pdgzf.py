@@ -18,3 +18,5 @@ def get_house_status(filter=2, type=2):
 
 if int(get_house_status(2, 2)) > 0:
     print("New Source Found!") 
+
+driver.quit()
