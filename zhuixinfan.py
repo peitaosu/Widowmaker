@@ -13,4 +13,11 @@ def get_magnet(page_url):
     driver.get(page_url)
     magnet_xpath = '//dd[@id="torrent_url"]'
     magnet_element = driver.find_element_by_xpath(magnet_xpath)
-    print(magnet_element.text)
+    return magnet_element.text
+
+def save_magnet_to_file(out_file, magnet):
+    with open(out_file, "a+") as out:
+        out.write(magnet + "\n")
+
+for sub_page in get_sub_pages("http://zhuixinfan.com/main.php?mod=viewtvplay&pid=843"):
+    save_magnet_to_file("out.txt", get_magnet(sub_page))
