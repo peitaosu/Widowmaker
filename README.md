@@ -16,6 +16,7 @@ This project will contains some web spiders which can help you to get informatio
 * https://unsplash.com
 * https://www.nationalgeographic.com
 * https://select.pdgzf.com/houseLists
+* http://zhuixinfan.com/
 
 ## Selenium
 
