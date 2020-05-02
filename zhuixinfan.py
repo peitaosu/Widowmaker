@@ -21,5 +21,5 @@ def save_magnet_to_file(out_file, magnet):
 
 if __name__=="__main__":
     for sub_page in get_sub_pages(sys.argv[1]):
-        save_magnet_to_file("out.txt", get_magnet(sub_page))
+        save_magnet_to_file(sys.argv[2], get_magnet(sub_page))
     driver.quit()
