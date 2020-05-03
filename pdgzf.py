@@ -22,4 +22,4 @@ while True:
         break
     else:
         time.sleep(60)
-driver.quit()
+#driver.quit()
