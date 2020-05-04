@@ -20,6 +20,14 @@ def save_magnet_to_file(out_file, magnet):
         out.write(magnet + "\n")
 
 if __name__=="__main__":
-    for sub_page in get_sub_pages(sys.argv[1]):
-        save_magnet_to_file(sys.argv[2], get_magnet(sub_page))
+    if len(sys.argv) >= 3:
+        link = sys.argv[1]
+        output = sys.argv[2]
+    elif len(sys.argv) == 2:
+        link = sys.argv[1]
+        output = "out.txt"
+    else:
+        sys.exit("python zhuixinfan.py <link> [<output>]")
+    for sub_page in get_sub_pages(link):
+        save_magnet_to_file(output, get_magnet(sub_page))
     driver.quit()
