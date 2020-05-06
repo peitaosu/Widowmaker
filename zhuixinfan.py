@@ -19,6 +19,10 @@ def save_magnet_to_file(out_file, magnet):
     with open(out_file, "a+") as out:
         out.write(magnet + "\n")
 
+def save_magnet_to_clipboard(magnet):
+    import pyperclip
+    pyperclip.copy(magnet)
+
 if __name__=="__main__":
     if len(sys.argv) >= 3:
         link = sys.argv[1]
