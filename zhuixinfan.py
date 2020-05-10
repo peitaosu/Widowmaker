@@ -10,7 +10,7 @@ def get_sub_pages(list_page):
 
 def get_magnet(page_url):
     magnet_xpath = '//dd[@id="torrent_url"]'
-    magnet_element = helper.get_elements_by_xpath(page_url, magnet_xpath)
+    magnet_element = helper.get_element_by_xpath(page_url, magnet_xpath)
     return magnet_element.text
 
 def save_magnet_to_file(out_file, magnet):
