@@ -21,15 +21,14 @@ def save_magnet_to_clipboard(magnet):
     import pyperclip
     pyperclip.copy(magnet)
 
-if __name__=="__main__":
-    if len(sys.argv) >= 3:
-        link = sys.argv[1]
-        output = sys.argv[2]
-    elif len(sys.argv) == 2:
-        link = sys.argv[1]
-        output = "out.txt"
-    else:
-        sys.exit("python zhuixinfan.py <link> [<output>]")
-    for sub_page in get_sub_pages(link):
-        save_magnet_to_file(output, get_magnet(sub_page))
-    driver.quit()
+if len(sys.argv) >= 3:
+    link = sys.argv[1]
+    output = sys.argv[2]
+elif len(sys.argv) == 2:
+    link = sys.argv[1]
+    output = "out.txt"
+else:
+    sys.exit("python zhuixinfan.py <link> [<output>]")
+for sub_page in get_sub_pages(link):
+    save_magnet_to_file(output, get_magnet(sub_page))
+helper.quit()
