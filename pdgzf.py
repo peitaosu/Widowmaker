@@ -16,17 +16,15 @@ def get_house_status(filter=2, type=2):
     house_count_element = driver.find_element_by_xpath(house_count_xpath)
     return house_count_element.text
 
-if __name__=="__main__":
-    if len(sys.argv) >= 3:
-        filter = int(sys.argv[1])
-        type = int(sys.argv[2])
+if len(sys.argv) >= 3:
+    filter = int(sys.argv[1])
+    type = int(sys.argv[2])
+else:
+    filter = 2
+    type = 2
+while True:
+    if int(get_house_status(filter, type)) > 0:
+        print("New Source Found!")
+        break
     else:
-        filter = 2
-        type = 2
-    while True:
-        if int(get_house_status(filter, type)) > 0:
-            print("New Source Found!")
-            break
-        else:
-            time.sleep(60)
-#driver.quit()
+        time.sleep(60)
