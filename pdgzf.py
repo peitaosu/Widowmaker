@@ -23,6 +23,7 @@ else:
     filter = 2
     type = 2
 while True:
+    time.sleep(10)
     if int(get_house_status(filter, type)) > 0:
         print("New Source Found!")
         break
