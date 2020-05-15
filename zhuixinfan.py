@@ -28,7 +28,8 @@ elif len(sys.argv) == 2:
     link = sys.argv[1]
     output = "out.txt"
 else:
-    sys.exit("python zhuixinfan.py <link> [<output>]")
+    print("python zhuixinfan.py <link> [<output>]")
+    sys.exit(-1)
 for sub_page in get_sub_pages(link):
     save_magnet_to_file(output, get_magnet(sub_page))
 helper.quit()
