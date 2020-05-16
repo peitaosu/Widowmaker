@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import os, sys, time
-from selenium import webdriver
+from helper import Helper
 
-driver = webdriver.Chrome()
+helper = Helper()
 
 def get_house_status(filter=2, type=2):
     page_url = "https://select.pdgzf.com/houseLists"
