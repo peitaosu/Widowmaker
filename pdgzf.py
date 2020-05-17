@@ -6,9 +6,8 @@ helper = Helper()
 
 def get_house_status(filter=2, type=2):
     page_url = "https://select.pdgzf.com/houseLists"
-    driver.get(page_url)
     filter_xpath = '//ul[@class="clearfix fl"]'
-    filter_element = driver.find_elements_by_xpath(filter_xpath)[filter]
+    filter_element = helper.get_elements_by_xpath(page_url, filter_xpath)[filter]
     type_element = filter_element.find_elements_by_tag_name("li")[type]
     type_element.click()
     time.sleep(5)
